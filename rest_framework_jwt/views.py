@@ -79,6 +79,19 @@ class VerifyJSONWebToken(JSONWebTokenAPIView):
     """
     serializer_class = VerifyJSONWebTokenSerializer
 
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+
+        if serializer.is_valid():
+            user = serializer.object.get('user') or request.user
+            token = serializer.object.get('token')
+            response_data = jwt_response_payload_handler(token, user, request)
+            response_data['user_id'] = user.id
+
+            return Response(response_data)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class RefreshJSONWebToken(JSONWebTokenAPIView):
     """
