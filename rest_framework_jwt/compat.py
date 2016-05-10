@@ -18,9 +18,7 @@ class PasswordField(serializers.CharField):
 
 
 def get_username_field():
-    username_field = 'email'
-
-    return username_field
+    return "email"
 
 
 def get_username(user):
