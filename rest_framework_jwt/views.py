@@ -87,6 +87,7 @@ class VerifyJSONWebToken(JSONWebTokenAPIView):
             token = serializer.object.get('token')
             response_data = jwt_response_payload_handler(token, user, request)
             response_data['user_id'] = user.id
+            del response_data['token']  # Make the response smaller
 
             return Response(response_data)
 
